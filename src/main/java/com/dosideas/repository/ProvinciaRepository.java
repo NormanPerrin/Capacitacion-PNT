@@ -9,4 +9,5 @@ public interface ProvinciaRepository extends JpaRepository<Provincia, Long> {
     Collection<Provincia> findByNombreIgnoreCase(String nombre);
     Collection<Provincia> findByNombreContaining(String nombre);
     Collection<Provincia> findByPaisNombreContaining(String nombre);
+    Collection<Provincia> findByPaisId(long id);
 }

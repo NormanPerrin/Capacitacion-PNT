@@ -46,6 +46,21 @@ public class ProvinciaServiceImpl implements ProvinciaService {
                 
         return provinciaRepository.findByPaisNombreContaining(nombre);
     }
+
+    @Override
+    public Collection<Provincia> buscarProvinciasPorPaisId(long id) {
+        return provinciaRepository.findByPaisId(id);
+    }
+
+    @Override
+    public void grabarProvincia(Provincia provincia) {
+        if (provincia == null ||
+            provincia.getNombre() == null ||
+            provincia.getPais() == null) {
+            throw new IllegalArgumentException();
+        }
+        provinciaRepository.save(provincia);
+    }
     
     
 

@@ -5,9 +5,9 @@ import com.dosideas.domain.Provincia;
 import com.dosideas.exception.NombreInvalidoException;
 import java.util.Collection;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,15 @@ public class ProvicinciaServiceTest {
 
     @Autowired
     private ProvinciaService service;
+    
+    @Autowired
+    private PaisService servicePais;
 
     @Test
     public void buscarPorId_idExistente_retornaProvinciaSolicitada() {
-        System.out.println("------------------------------> " + service.getClass().getName());
-        
         Provincia provincia = service.buscarPorId(4L);
 
-        assertEquals(4, provincia.getId());
+        assertEquals(new Long(4), provincia.getId());
         assertEquals("Chaco", provincia.getNombre());
     }
 
@@ -82,36 +83,70 @@ public class ProvicinciaServiceTest {
     public void buscarPorNombreContiene_ingresandoNull_lanzaNombreInvalidoException() {
         service.buscarPorNombreContiene(null);
     }
-    
+
     @Test
     public void buscarPorNombrePais_paisExistenteConProvincias_listaProvincias() {
         Collection<Provincia> provincias = service.buscarPorNombrePaisContiene("Argen");
-        
+
         assertTrue(provincias.stream().allMatch((provincia) -> provincia.getPais().getNombre().contains("Argen")));
     }
-    
+
     @Test
     public void buscarPorNombrePais_paisExistenteSinProvincias_listaVacia() {
         Collection<Provincia> provincias = service.buscarPorNombrePaisContiene("Bra");
-        
+
         assertTrue(provincias.isEmpty());
     }
-    
+
     @Test
     public void buscarPorNombrePais_paisInexistente_listaVacia() {
         Collection<Provincia> provincias = service.buscarPorNombrePaisContiene("Bra");
-        
+
         assertTrue(provincias.isEmpty());
     }
-    
+
     @Test(expected = NombreInvalidoException.class)
     public void buscarPorNombrePais_conNull_lanzaNombreInvalidoException() {
         service.buscarPorNombrePaisContiene(null);
     }
-    
-    // FIX
+
     @Test
-    public void grabarProvincia_provincia() {
+    public void buscarProvinciasPorPaisId_conIdExistente_retornaListaProvinciasDelPais() {
+        Collection<Provincia> provincias = service.buscarProvinciasPorPaisId(1L);
         
+        assertEquals(20, provincias.size());
+        assertTrue(provincias.stream().allMatch((provincia) -> provincia.getPais().getId() == 1L));
+    }
+    
+    @Test
+    public void buscarProvinciasPorPaisId_conIdInexistente_retornaListaVacia() {
+        Collection<Provincia> provincias = service.buscarProvinciasPorPaisId(21L);
+        
+        assertTrue(provincias.isEmpty());
+    }
+    
+    @Test
+    public void grabarProvincia_provinciaValida_agregaProvincia() {
+        Provincia provincia = new Provincia();
+        provincia.setNombre("Tierra del fuego");
+        provincia.setPais(servicePais.buscarPorId(1L));
+        
+        service.grabarProvincia(provincia);
+        
+        assertNotNull(service.buscarPorId(21L));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void grabarProvincia_provinciaCamposInvalidos_lanzaIllegalArgumentException() {
+        Provincia provincia = new Provincia();
+        provincia.setNombre(null);
+        provincia.setPais(null);
+        
+        service.grabarProvincia(provincia);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void grabarProvincia_null_lanzaIllegalArgumentException() {
+        service.grabarProvincia(null);
     }
 }

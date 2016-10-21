@@ -34,7 +34,7 @@
                             <c:forEach var="pais" items="${paises}">
                                 <tr>
                                     <td>${pais.id}</td>
-                                    <td>${pais.nombre}</td>
+                                    <td><a href="paises/${pais.id}/provincias">${pais.nombre}</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>

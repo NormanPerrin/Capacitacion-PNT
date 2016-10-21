@@ -5,23 +5,23 @@
  */
 package com.dosideas.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/**
- *
- * @author escuelita
- */
 @Entity
-public class Provincia {
+public class Provincia implements Serializable {
     
     private String nombre;
     
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne
@@ -44,12 +44,12 @@ public class Provincia {
         this.nombre = nombre;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     public String getNombre() {
         return nombre;
     }
-    
+
 }

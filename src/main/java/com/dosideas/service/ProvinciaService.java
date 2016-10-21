@@ -8,4 +8,7 @@ public interface ProvinciaService {
     Collection<Provincia> buscarPorNombreExacto(String nombre);
     Collection<Provincia> buscarPorNombreContiene(String nombre);
     Collection<Provincia> buscarPorNombrePaisContiene(String nombre);
+    Collection<Provincia> buscarProvinciasPorPaisId(long id);
+    
+    void grabarProvincia(Provincia provincia);
 }
