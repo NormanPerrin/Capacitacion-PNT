@@ -15,3 +15,7 @@ La capacitación consistió en avazar sobre este proyecto mejorándolo progresiv
   - Proxy
 - Inyección de dependencias con Spring
 - Queries con JPA
+
+## "Alumnos"
+- [NormanPerrin](https://github.com/NormanPerrin)
+- [Martum](https://github.com/Martum)
